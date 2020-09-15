@@ -1,18 +1,24 @@
-package com.codecool.apigateway.model;
+package com.codecool.user.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCredentials {
+public class UserModel {
 
     private Long id;
+
     private String username;
+
     private String email;
+
     private String password;
+
+    private List<String> roles = new ArrayList<>();
 }

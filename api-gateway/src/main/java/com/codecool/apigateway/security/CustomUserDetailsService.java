@@ -1,6 +1,6 @@
 package com.codecool.apigateway.security;
 
-import com.codecool.microserviceprojectbackend.apigateway.model.UserData;
+import com.codecool.apigateway.model.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -69,6 +67,7 @@ public class AuthController {
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("userid", user.getId());
+            model.put("email", user.getEmail());
             model.put("roles", roles);
             model.put("token", token);
             return ResponseEntity.ok(model);
