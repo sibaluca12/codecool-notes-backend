@@ -22,9 +22,7 @@ public class UserService {
         passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    public boolean registerUser(UserModel userCredentials) {
-        return false;
-    }
+
 
     public boolean handleRegistration(String username, String email, String password) {
 

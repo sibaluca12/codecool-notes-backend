@@ -17,10 +17,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/registration", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,24 +37,39 @@ public class UserController {
         return ResponseEntity.ok(userId);
     }
 
-//    @Autowired
-//    private UserService userService;
+    @PostMapping(value = "/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean changePassword(@RequestBody UserModel userModel){
+        boolean exists = userRepository.existsByUsernameOrEmail(userModel.getUsername(), userModel.getEmail());
+        if(exists){
+            userRepository.updatePassword(userModel.getPassword(), userModel.getUsername());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PostMapping(value = "/changeEmail", produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean changeEmail(@RequestBody UserModel userModel){
+        boolean exists = userRepository.existsByUsernameOrEmail(userModel.getUsername(), userModel.getEmail());
+        if(exists){
+            userRepository.updateEmail(userModel.getEmail(), userModel.getUsername());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
 //
 //    @Autowired
 //    private UserRepository userRepository;
-//
-//    @RequestMapping(path = "/registration",method = POST)
-//    public boolean registerUser(@RequestBody UserModel userCredentials) {
-//        return userService.registerUser(userCredentials);
-//    }
-//
-//    @RequestMapping(path = "/getUser/{username}",method = GET)
-//    public UserEntity getUser(@PathVariable String username) {
-//        return userRepository.findByUsername(username);
-//    }
-//
-//    @GetMapping("/users")
-//    public List<UserEntity> getAllUsers(){
-//        return userRepository.findAll();
-//    }
+
+
+    @RequestMapping(path = "/getUser/{username}",method = GET)
+    public UserEntity getUser(@PathVariable String username) {
+        return userRepository.findByUsername(username);
+    }
+
+
 }

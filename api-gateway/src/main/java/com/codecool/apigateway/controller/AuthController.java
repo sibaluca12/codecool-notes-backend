@@ -7,6 +7,7 @@ import com.codecool.apigateway.model.UserData;
 import com.codecool.apigateway.security.JwtTokenServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +30,8 @@ import java.util.stream.Collectors;
 
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/auth", method = {RequestMethod.GET, RequestMethod.POST})
 public class AuthController {
-
-
-    // @Autowired
-    // LoginService loginService;
 
     @Autowired
     RestTemplate restTemplate;
@@ -48,6 +44,9 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
         this.jwtTokenServices = jwtTokenServices;
     }
+
+    @Value("${user-service.url}")
+    private String baseUrl;
 
 
     @ResponseStatus(HttpStatus.OK)
@@ -62,7 +61,7 @@ public class AuthController {
                     .collect(Collectors.toList());
 
             String token = jwtTokenServices.createToken(username, roles);
-            UserData user = restTemplate.getForObject("http://localhost:8091/user/getUser/" + username, UserData.class);
+            UserData user = restTemplate.getForObject( baseUrl +"/getUser/" + username, UserData.class);
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);

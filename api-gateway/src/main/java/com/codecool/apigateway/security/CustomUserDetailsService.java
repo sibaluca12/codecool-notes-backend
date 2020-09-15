@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserData user = restTemplate.getForObject("http://localhost:8091/user/getUser/" + username, UserData.class);
+        UserData user = restTemplate.getForObject( baseUrl +"/getUser/" + username, UserData.class);
 
         if (user == null) {
             throw new UsernameNotFoundException("Username: " + username + " not found");

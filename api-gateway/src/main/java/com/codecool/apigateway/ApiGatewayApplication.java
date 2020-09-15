@@ -1,5 +1,7 @@
 package com.codecool.apigateway;
 
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
+@EnableEurekaClient
+@EnableZuulProxy
 public class ApiGatewayApplication {
 
 	public static void main(String[] args) {
