@@ -8,9 +8,8 @@ import com.codecool.apigateway.security.JwtTokenServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,16 +59,30 @@ public class AuthController {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
 
+            System.out.println("HELLOOOOO");
             String token = jwtTokenServices.createToken(username, roles);
-            UserData user = restTemplate.getForObject( baseUrl +"/getUser/" + username, UserData.class);
+            System.out.println("Token: "+ token);
+            UserData user = restTemplate.getForObject( "http://localhost:8091/user/getUser/" + username, UserData.class);
+
+
+
+            ResponseCookie cookie = ResponseCookie
+                    .from("authentication", token)
+                    .maxAge(7 * 24 * 60 * 60)  //10 hrs
+                    .path("/").httpOnly(false).secure(false).build();
+
+
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("userid", user.getId());
             model.put("email", user.getEmail());
             model.put("roles", roles);
-            model.put("token", token);
-            return ResponseEntity.ok(model);
+            model.put("token", cookie);
+            System.out.println(cookie.toString());
+
+            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .body(model);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");
         }

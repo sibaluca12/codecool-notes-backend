@@ -59,6 +59,11 @@ public class UserController {
         }
     }
 
+    @RequestMapping(path = "/getMyUser",method = POST)
+    public UserEntity getUser(@RequestBody UserModel userModel) {
+        return userRepository.findByUsername(userModel.getUsername());
+    }
+
 
 
 //

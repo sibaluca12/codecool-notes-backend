@@ -1,5 +1,10 @@
 package com.codecool.apigateway;
 
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
@@ -8,6 +13,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -19,6 +25,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
+import javax.net.ssl.SSLContext;
+import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +46,29 @@ public class ApiGatewayApplication {
 	}
 
 
+
+
+//	@Bean
+//	RestTemplate restTemplate() throws Exception {
+//		SSLContext sslContext = new SSLContextBuilder()
+//				.loadTrustMaterial(trustStore.getURL(), "password".toCharArray())
+//				.build();
+//		SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext);
+//		CloseableHttpClient httpClient = HttpClients.custom()
+//				.setSSLSocketFactory(socketFactory)
+//				.build();
+//		HttpComponentsClientHttpRequestFactory factory =
+//				new HttpComponentsClientHttpRequestFactory(httpClient);
+//		return new RestTemplate(factory);
+//	}
+
+
 	@Bean
 	public CorsFilter corsFilter() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		final CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOrigin("*");
+		config.addAllowedOrigin("http://localhost:3000");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("OPTIONS");
 		config.addAllowedMethod("HEAD");

@@ -35,6 +35,7 @@ public class UserService {
                     .email(email)
                     .password(passwordEncoder.encode(password))
                     .username(username)
+                    .roles(Collections.singletonList("ROLE_USER"))
                     .build();
             userRepository.save(userEntity);
         }
