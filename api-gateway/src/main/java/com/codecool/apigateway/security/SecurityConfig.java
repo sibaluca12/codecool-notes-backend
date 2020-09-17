@@ -45,6 +45,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter{
                 .antMatchers(HttpMethod.GET, "/auth/login").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/auth/login").permitAll()
                 .antMatchers("/user-service/user/getUser/**").authenticated()
+                .antMatchers("/notes-service/**").authenticated()
 
 
                 .anyRequest().denyAll()

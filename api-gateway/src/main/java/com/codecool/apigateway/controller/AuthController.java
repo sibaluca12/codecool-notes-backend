@@ -78,7 +78,7 @@ public class AuthController {
             model.put("userid", user.getId());
             model.put("email", user.getEmail());
             model.put("roles", roles);
-            model.put("token", cookie);
+           // model.put("token", cookie);
             System.out.println(cookie.toString());
 
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
